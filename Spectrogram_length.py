@@ -27,7 +27,7 @@ def write_files(song_file: str, argb: tuple) -> None:
 
 
 if __name__ == "__main__":
-    with open("lengths.txt", mode='r', encoding="utf-8") as file:
+    with open("Used/lengths.txt", mode='r', encoding="utf-8") as file:
         with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
             for songs_pre in file:
                 print(songs_pre)

@@ -43,7 +43,7 @@ def process_audio(music_file: str, album_no: int) -> None:
 
 
 if __name__ == "__main__":
-    with open("output.csv", mode='r', encoding="utf-8") as file:
+    with open("Used/output.csv", mode='r', encoding="utf-8") as file:
         for folder_pre in file:
             folder = folder_pre.split("^")[0]
             album_no = int(folder_pre.split("^")[1])
