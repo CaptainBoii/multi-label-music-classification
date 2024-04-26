@@ -1,23 +1,33 @@
+import gc
 import os
 import numpy as np
 from keras.preprocessing.image import load_img, img_to_array
 from keras.models import Sequential
 from keras.preprocessing import image_dataset_from_directory
 from keras.utils import Sequence
+from keras.optimizers import Adam
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
 
 results_labels = ['Test loss', 'Test accuracy', 'F1', 'Balanced', 'Precision', 'Recall']
 spect_types = ['Spectrograms/', 'MelSpectrograms/']
-genres = ['Ambient', 'Classical', 'Dance', 'Electronic', 'Experimental', 'Folk', 'Hip-Hop', 'Industrial & Noise',
-          'Jazz', 'Metal', 'Pop', 'Psychedelia', 'Punk', 'R&B', 'Rock', 'Singer-Songwriter']
+genres = [
+    'Ambient', 'Classical',
+    # 'Dance', 'Electronic',
+    # 'Experimental', 'Folk',
+    # 'Hip-Hop', 'Industrial & Noise',
+    # 'Jazz', 'Metal',
+    # 'Pop', 'Psychedelia',
+    # 'Punk', 'R&B',
+    # 'Rock', 'Singer-Songwriter'
+]
 main_dir = 'Data/Experiment_1_2/'
 save_dir = 'Models/Experiment_1/'
 test = '/Test'
 train = '/Train'
 valid = '/Valid'
 seed = 97
-batch_size = 50
-epochs = 3
+batch_size = 1
+epochs = 200
 image_size = (250, 250, 3)
 image_size_trim = (250, 250)
 
@@ -70,28 +80,24 @@ class BalancedDataGenerator(Sequence):
 
 
 for genre in genres:
+    print(genre)
     for spect_type in spect_types:
+        print()
+        print(spect_type)
+        print()
         train_positive = load_images_from_directory(main_dir + spect_type + genre + train, 'Positive')
         train_negative = load_images_from_directory(main_dir + spect_type + genre + train, 'Negative')
 
         data_generator = BalancedDataGenerator(train_positive, train_negative, batch_size)
-        # Load test data
-        # test_generator = image_dataset_from_directory(
-        #     directory=main_dir + spect_type + genre + test,
-        #     labels='inferred',
-        #     image_size=image_size_trim,
-        #     color_mode='rgb',
-        #     batch_size=100,
-        #     label_mode='binary'
-        # )
         valid_generator = image_dataset_from_directory(
             directory=main_dir + spect_type + genre + valid,
             labels='inferred',
             image_size=image_size_trim,
             color_mode='rgb',
-            batch_size=100,
+            batch_size=batch_size,
             label_mode='binary'
         )
+        optimizer = Adam(learning_rate=0.0001)
         model = Sequential([
             Input(shape=image_size),
             Conv2D(32, (3, 3), activation='relu'),
@@ -100,17 +106,24 @@ for genre in genres:
             MaxPooling2D((2, 2)),
             Conv2D(128, (3, 3), activation='relu'),
             MaxPooling2D((2, 2)),
+            Conv2D(256, (3, 3), activation='relu'),
+            MaxPooling2D((2, 2)),
             Flatten(),
             Dense(128, activation='relu'),
             Dropout(0.5),
             Dense(1, activation='sigmoid')
         ])
 
-        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
         model_history = model.fit(
             data_generator,
             validation_data=valid_generator,
             epochs=epochs)
 
-        model.save(save_dir+spect_type+genre+"/"+genre+".keras")
+        model.save(save_dir + spect_type + genre + "/" + genre + ".keras")
+        del train_positive
+        del train_negative
+        del data_generator
+        del valid_generator
+        gc.collect()
