@@ -1,6 +1,7 @@
 import gc
 import os
 import numpy as np
+import tensorflow as tf
 from keras import Sequential
 from keras.src.trainers.data_adapters.py_dataset_adapter import PyDataset
 from keras.src.utils import load_img, img_to_array, image_dataset_from_directory
@@ -24,6 +25,7 @@ save_dir = 'Models/Experiment_1/'
 test = '/Test'
 train = '/Train'
 valid = '/Valid'
+training = 'Training/'
 seed = 97
 batch_size = 1
 epochs = 200
@@ -78,18 +80,19 @@ class BalancedDataGenerator(PyDataset):
         np.random.shuffle(self.negative_indices)
 
 
+tf.random.set_seed(seed)
 for genre in genres:
     print(genre)
     for spect_type in spect_types:
         print()
         print(spect_type)
         print()
-        train_positive = load_images_from_directory(main_dir + spect_type + genre + train, 'Positive')
-        train_negative = load_images_from_directory(main_dir + spect_type + genre + train, 'Negative')
+        train_positive = load_images_from_directory(main_dir + spect_type + training + genre + train, 'Positive')
+        train_negative = load_images_from_directory(main_dir + spect_type + training + genre + train, 'Negative')
 
         data_generator = BalancedDataGenerator(train_positive, train_negative, batch_size)
         valid_generator = image_dataset_from_directory(
-            directory=main_dir + spect_type + genre + valid,
+            directory=main_dir + spect_type + training + genre + valid,
             labels='inferred',
             image_size=image_size_trim,
             color_mode='rgb',
@@ -114,14 +117,15 @@ for genre in genres:
             Dense(1, activation='sigmoid')
         ])
 
-        model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'], seed=seed)
+        model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
         model_history = model.fit(
             data_generator,
             validation_data=valid_generator,
             epochs=epochs)
 
-        model.save(save_dir + spect_type + genre + "/" + genre + ".keras")
+        model.save(save_dir + spect_type + genre + ".keras")
+        del model
         del train_positive
         del train_negative
         del data_generator
