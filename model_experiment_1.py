@@ -13,20 +13,20 @@ spect_types = ["Spectrograms/", "MelSpectrograms/"]
 genres = [
     # 'Ambient',
     # 'Classical',
-    "Dance",
-    # 'Electronic',
-    # 'Experimental',
-    # 'Folk',
-    # 'Hip-Hop',
-    # 'Industrial & Noise',
+    # 'Dance',
+    # "Electronic",
+    # "Experimental",
+    # "Folk",
+    # "Hip-Hop",
+    # "Industrial & Noise",
     # 'Jazz',
-    # 'Metal',
-    # 'Pop',
-    # 'Psychedelia',
-    # 'Punk',
-    # 'R&B',
-    # 'Rock',
-    # 'Singer-Songwriter'
+    # "Metal",
+    # "Pop",
+    # "Psychedelia",
+    # "Punk",
+    # "R&B",
+    # "Rock",
+    "Singer-Songwriter"
 ]
 main_dir = "Data/Experiment_1_2/"
 save_dir = "Models/Experiment_1/"
