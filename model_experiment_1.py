@@ -1,31 +1,39 @@
-import gc
 import os
 import numpy as np
 import tensorflow as tf
 from keras import Sequential
+from keras.src.callbacks import ModelCheckpoint, EarlyStopping
 from keras.src.trainers.data_adapters.py_dataset_adapter import PyDataset
 from keras.src.utils import load_img, img_to_array, image_dataset_from_directory
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+from tensorflow.keras.regularizers import L1L2
 
-results_labels = ['Test loss', 'Test accuracy', 'F1', 'Balanced', 'Precision', 'Recall']
-spect_types = ['Spectrograms/', 'MelSpectrograms/']
+spect_types = ["Spectrograms/", "MelSpectrograms/"]
 genres = [
-    'Ambient', 'Classical',
-    # 'Dance', 'Electronic',
-    # 'Experimental', 'Folk',
-    # 'Hip-Hop', 'Industrial & Noise',
-    # 'Jazz', 'Metal',
-    # 'Pop', 'Psychedelia',
-    # 'Punk', 'R&B',
-    # 'Rock', 'Singer-Songwriter'
+    # 'Ambient',
+    # 'Classical',
+    "Dance",
+    # 'Electronic',
+    # 'Experimental',
+    # 'Folk',
+    # 'Hip-Hop',
+    # 'Industrial & Noise',
+    # 'Jazz',
+    # 'Metal',
+    # 'Pop',
+    # 'Psychedelia',
+    # 'Punk',
+    # 'R&B',
+    # 'Rock',
+    # 'Singer-Songwriter'
 ]
-main_dir = 'Data/Experiment_1_2/'
-save_dir = 'Models/Experiment_1/'
-test = '/Test'
-train = '/Train'
-valid = '/Valid'
-training = 'Training/'
+main_dir = "Data/Experiment_1_2/"
+save_dir = "Models/Experiment_1/"
+test = "/Test"
+train = "/Train"
+valid = "/Valid"
+training = "Training/"
 seed = 97
 batch_size = 1
 epochs = 200
@@ -46,7 +54,9 @@ def load_images_from_directory(directory: str, label: str) -> np.array:
 
 
 class BalancedDataGenerator(PyDataset):
-    def __init__(self, positive_data: np.array, negative_data: np.array, batch_size_: int):
+    def __init__(
+        self, positive_data: np.array, negative_data: np.array, batch_size_: int
+    ):
         super().__init__()
         self.positive_data = positive_data
         self.negative_data = negative_data
@@ -81,53 +91,75 @@ class BalancedDataGenerator(PyDataset):
 
 
 tf.random.set_seed(seed)
+# tf.config.experimental.enable_op_determinism()
 for genre in genres:
     print(genre)
     for spect_type in spect_types:
         print()
         print(spect_type)
         print()
-        train_positive = load_images_from_directory(main_dir + spect_type + training + genre + train, 'Positive')
-        train_negative = load_images_from_directory(main_dir + spect_type + training + genre + train, 'Negative')
 
-        data_generator = BalancedDataGenerator(train_positive, train_negative, batch_size)
+        train_positive = load_images_from_directory(
+            main_dir + spect_type + training + genre + train, "Positive"
+        )
+        train_negative = load_images_from_directory(
+            main_dir + spect_type + training + genre + train, "Negative"
+        )
+        data_generator = BalancedDataGenerator(
+            train_positive, train_negative, batch_size
+        )
+
+        l1l2 = L1L2(l1=0.03, l2=0.03)
+
         valid_generator = image_dataset_from_directory(
             directory=main_dir + spect_type + training + genre + valid,
-            labels='inferred',
+            labels="inferred",
             image_size=image_size_trim,
-            color_mode='rgb',
+            color_mode="rgb",
             batch_size=batch_size,
-            label_mode='binary'
+            label_mode="binary",
         )
-        optimizer = Adam(learning_rate=0.001, use_ema=True, ema_momentum=0.7)
-        model = Sequential([
-            Input(shape=image_size),
-            Conv2D(32, (3, 3), activation='relu'),
-            MaxPooling2D((2, 2)),
-            Conv2D(64, (3, 3), activation='relu'),
-            MaxPooling2D((2, 2)),
-            Conv2D(128, (3, 3), activation='relu'),
-            MaxPooling2D((2, 2)),
-            Conv2D(256, (3, 3), activation='relu'),
-            MaxPooling2D((2, 2)),
-            Flatten(),
-            Dense(256, activation='relu'),
-            Dense(256, activation='relu'),
-            Dropout(0.2),
-            Dense(1, activation='sigmoid')
-        ])
 
-        model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
+        model_checkpoint_callback = ModelCheckpoint(
+            filepath=save_dir
+            + spect_type
+            + genre
+            + "-{epoch:02d}-{val_accuracy:.2f}-{val_loss:.2f}.keras",
+            monitor="val_accuracy",
+            mode="max",
+            save_best_only=True,
+        )
+
+        early_stopping = EarlyStopping(
+            monitor="val_loss", patience=50, verbose=0, min_delta=1e-4
+        )
+
+        optimizer = Adam(learning_rate=0.001, use_ema=True, ema_momentum=0.7)
+        model = Sequential(
+            [
+                Input(shape=image_size),
+                Conv2D(32, (3, 3), activation="relu"),
+                MaxPooling2D((2, 2)),
+                Conv2D(64, (3, 3), activation="relu"),
+                MaxPooling2D((2, 2)),
+                Conv2D(128, (3, 3), activation="relu"),
+                MaxPooling2D((2, 2)),
+                Conv2D(256, (3, 3), activation="relu"),
+                MaxPooling2D((2, 2)),
+                Flatten(),
+                Dense(256, activation="relu", kernel_regularizer=l1l2),
+                Dropout(0.5),
+                Dense(1, activation="sigmoid"),
+            ]
+        )
+
+        model.compile(
+            optimizer=optimizer, loss="binary_crossentropy", metrics=["accuracy"]
+        )
 
         model_history = model.fit(
             data_generator,
             validation_data=valid_generator,
-            epochs=epochs)
-
-        model.save(save_dir + spect_type + genre + ".keras")
-        del model
-        del train_positive
-        del train_negative
-        del data_generator
-        del valid_generator
-        gc.collect()
+            epochs=epochs,
+            callbacks=[model_checkpoint_callback, early_stopping],
+        )
