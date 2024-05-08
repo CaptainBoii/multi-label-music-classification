@@ -36,11 +36,6 @@ with open("Data/test_labels.csv") as csv_file:
     test_files = list(map(lambda t_file: spectrogram_data + t_file, test_keys))
     all_files = list(set(all_files) - set(test_files))
 
-for file in test_files:
-    file_redux = file.split("/Spectrograms/")[1]
-    shutil.copyfile(spectrogram_data + file_redux, training_data + file_redux)
-    shutil.copyfile(melspectrogram_data + file_redux, mel_training_data + file_redux)
-
 
 for genre in genres:
     positive_files = []

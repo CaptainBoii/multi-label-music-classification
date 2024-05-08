@@ -13,28 +13,28 @@ genres = [
     # "Ambient",
     # "Classical",
     # "Dance",
-    # "Electronic",
-    # "Experimental",
-    # "Folk",
-    # "Hip-Hop",
-    # "Industrial & Noise",
-    # "Jazz",
-    # "Metal",
-    # "Pop",
-    # "Psychedelia",
-    # "Punk",
-    # "R&B",
+    "Electronic",
+    "Experimental",
+    "Folk",
+    "Hip-Hop",
+    "Industrial & Noise",
+    "Jazz",
+    "Metal",
+    "Pop",
+    "Psychedelia",
+    "Punk",
+    "R&B",
     "Rock",
     "Singer-Songwriter",
 ]
-main_dir = "Data/Experiment_1_2/"
-save_dir = "Models/Experiment_2/"
+main_dir = "Data/Experiment_3/"
+save_dir = "Models/Experiment_3/"
 test = "/Test"
 train = "/Train"
 valid = "/Valid"
 training = "Training/"
 seed = 97
-batch_size = 250
+batch_size = 200
 epochs = 200
 image_size = (250, 250, 3)
 image_size_trim = (250, 250)
