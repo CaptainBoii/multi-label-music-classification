@@ -45,7 +45,7 @@ def process_audio(music_file: str, album_no: int) -> None:
 if __name__ == "__main__":
     with open("output.txt", mode="r", encoding="utf-8") as file:
         for folder_pre in file:
-            folder = folder_pre.split("^")[0]
+            folder = r"{}".format(folder_pre.split("^")[0])
             album_no = int(folder_pre.split("^")[1])
             with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
                 for music_file in os.listdir(folder):
