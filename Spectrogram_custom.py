@@ -1,6 +1,4 @@
 import os
-import threading
-from concurrent.futures import ProcessPoolExecutor
 
 import librosa.display
 import librosa.feature
@@ -10,7 +8,6 @@ import numpy as np
 n_fft = 2048
 hop_length = 512
 plot_size = (2.5, 2.5)
-lock = threading.Lock()
 
 
 def process_audio(music_file: str) -> None:
@@ -21,6 +18,7 @@ def process_audio(music_file: str) -> None:
     spectrogram = np.abs(audio_stft)
     log_spectrogram = librosa.amplitude_to_db(spectrogram)
     fig = plt.figure(figsize=plot_size)
+    plt.ylim(top=32)
     librosa.display.specshow(
         log_spectrogram, sr=sr, cmap="magma", hop_length=hop_length
     )
@@ -37,6 +35,7 @@ def process_audio(music_file: str) -> None:
     mel_spectrogram = np.abs(mel_signal)
     power_to_db = librosa.power_to_db(mel_spectrogram, ref=np.max)
     fig1 = plt.figure(figsize=plot_size)
+    plt.ylim(top=16)
     librosa.display.specshow(power_to_db, sr=sr, cmap="magma", hop_length=hop_length)
     fig1.subplots_adjust(bottom=0, top=1, right=1, left=0)
     mel_spectrogram_path = os.path.join(
@@ -48,6 +47,8 @@ def process_audio(music_file: str) -> None:
 
 if __name__ == "__main__":
     all_files = os.listdir("./Spectrograms/Processed/AudioFiles/")
-    with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
-        for music_file in all_files:
-            executor.submit(process_audio, music_file)
+    # with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
+    for music_file in all_files:
+        process_audio(music_file)
+        break
+    # executor.submit(process_audio, music_file)
