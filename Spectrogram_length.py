@@ -6,7 +6,7 @@ from PIL import Image
 
 def convert_argb(length: int) -> tuple:
     if length >= 1024:
-        return 255, 255, 255, 255
+        return 255, 255, 255, 0
     elif length >= 768:
         return 255, 255, 255, 255 - (length % 768)
     elif length >= 512:
@@ -27,7 +27,7 @@ def write_files(song_file: str, argb: tuple) -> None:
 
 
 if __name__ == "__main__":
-    with open("Used/lengths.txt", mode='r', encoding="utf-8") as file:
+    with open("lengths.txt", mode="r", encoding="utf-8") as file:
         with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
             for songs_pre in file:
                 print(songs_pre)

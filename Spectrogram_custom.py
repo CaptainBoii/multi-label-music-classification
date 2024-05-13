@@ -1,9 +1,11 @@
 import os
-
+from concurrent.futures import ProcessPoolExecutor
 import librosa.display
 import librosa.feature
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
+import gc
 
 n_fft = 2048
 hop_length = 512
@@ -43,12 +45,25 @@ def process_audio(music_file: str) -> None:
     )
     plt.savefig(mel_spectrogram_path)
     plt.close(fig1)
+    
+    del signal
+    del sr
+    del audio_stft
+    del spectrogram
+    del log_spectrogram
+    del mel_signal
+    del mel_spectrogram
+    del power_to_db
+    
+    gc.collect()
 
 
 if __name__ == "__main__":
+    matplotlib.use('Agg')
     all_files = os.listdir("./Spectrograms/Processed/AudioFiles/")
-    # with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
-    for music_file in all_files:
-        process_audio(music_file)
-        break
-    # executor.submit(process_audio, music_file)
+    #chunks = [all_files[x:x+100] for x in range(0, len(all_files), 10)]
+    #for chunk in chunks:
+    with ProcessPoolExecutor(max_workers=8) as executor:
+        for music_file in all_files:
+                #process_audio(music_file)
+            executor.submit(process_audio, music_file)
