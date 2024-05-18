@@ -26,13 +26,13 @@ for spect in ["Spectrograms", "MelSpectrograms"]:
             for class_ in ["Positive", "Negative"]:
                 path = os.path.join("./Data/Experiment_3/", spect, genre, mode, class_)
                 target = os.path.join(
-                    "./Data/Experiment_4/", spect, genre, mode, class_
+                    "./Data/Experiment_5/", spect, genre, mode, class_
                 )
                 files = os.listdir(path)
                 for file in files:
                     shutil.copy(
                         os.path.join(
-                            "Spectrograms", "Processed", "Default", spect, file
+                            "Spectrograms", "Processed", "Scaled", spect, file
                         ),
                         os.path.join(target, file),
                     )

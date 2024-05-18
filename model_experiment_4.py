@@ -10,9 +10,9 @@ from tensorflow.keras.regularizers import L1L2
 
 spect_types = ["Spectrograms/", "MelSpectrograms/"]
 genres = [
-    # "Ambient",
-    # "Classical",
-    # "Dance",
+    "Ambient",
+    "Classical",
+    "Dance",
     "Electronic",
     "Experimental",
     "Folk",
@@ -27,12 +27,11 @@ genres = [
     "Rock",
     "Singer-Songwriter",
 ]
-main_dir = "Data/Experiment_3/"
-save_dir = "Models/Experiment_3/"
+main_dir = "Data/Experiment_4/"
+save_dir = "Models/Experiment_4/"
 test = "/Test"
 train = "/Train"
 valid = "/Valid"
-training = "Training/"
 seed = 97
 batch_size = 200
 epochs = 200
@@ -61,7 +60,7 @@ for genre in genres:
         print()
 
         train_generator = image_dataset_from_directory(
-            directory=main_dir + spect_type + training + genre + train,
+            directory=main_dir + spect_type + genre + train,
             labels="inferred",
             image_size=image_size_trim,
             color_mode="rgb",
@@ -70,7 +69,7 @@ for genre in genres:
         )
 
         valid_generator = image_dataset_from_directory(
-            directory=main_dir + spect_type + training + genre + valid,
+            directory=main_dir + spect_type + genre + valid,
             labels="inferred",
             image_size=image_size_trim,
             color_mode="rgb",
