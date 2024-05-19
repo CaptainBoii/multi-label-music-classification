@@ -13,10 +13,19 @@ genres = [
     "Metal",
     "Pop",
     "Psychedelia",
-    "Punk",
     "R&B",
     "Rock",
     "Singer-Songwriter",
+    "Punk",
+]
+
+test = "./Data/Test/"
+input = "./Spectrograms/"
+
+types = [
+    "Default/",
+    "Processed/",
+    "Scaled/",
 ]
 
 if __name__ == "__main__":
@@ -25,22 +34,10 @@ if __name__ == "__main__":
             image, genres_list = line.strip().split(",")
             genres_ = genres_list.split("_")
             for i, genre in enumerate(genres):
-                if str(i) in genres_:
-                    shutil.copy(
-                        "./Data/Test/Spectrograms/" + image,
-                        "./Data/Test/Spectrograms/" + genre + "/Positive/" + image,
-                    )
-                    shutil.copy(
-                        "./Data/Test/MelSpectrograms/" + image,
-                        "./Data/Test/MelSpectrograms/" + genre + "/Positive/" + image,
-                    )
-
-                else:
-                    shutil.copy(
-                        "./Data/Test/Spectrograms/" + image,
-                        "./Data/Test/Spectrograms/" + genre + "/Negative/" + image,
-                    )
-                    shutil.copy(
-                        "./Data/Test/MelSpectrograms/" + image,
-                        "./Data/Test/MelSpectrograms/" + genre + "/Negative/" + image,
-                    )
+                bol = "/Positive/" if str(i) in genres_ else "/Negative/"
+                for typ in types:
+                    for spect_type in ["Spectrograms/", "MelSpectrograms/"]:
+                        shutil.copy(
+                            input + typ + spect_type + image,
+                            test + typ + spect_type + genre + bol + image,
+                        )
