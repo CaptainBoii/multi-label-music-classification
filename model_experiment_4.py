@@ -1,9 +1,7 @@
-import os
-import numpy as np
 import tensorflow as tf
 from keras import Sequential
 from keras.src.callbacks import ModelCheckpoint, EarlyStopping
-from keras.src.utils import load_img, img_to_array, image_dataset_from_directory
+from keras.src.utils import image_dataset_from_directory
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
 from tensorflow.keras.regularizers import L1L2
@@ -37,18 +35,6 @@ batch_size = 200
 epochs = 200
 image_size = (250, 250, 3)
 image_size_trim = (250, 250)
-
-
-def load_images_from_directory(directory: str, label: str) -> np.array:
-    images = []
-    label_dir = os.path.join(directory, label)
-    if os.path.isdir(label_dir):
-        for filename in os.listdir(label_dir):
-            filepath = os.path.join(label_dir, filename)
-            image = load_img(filepath, target_size=image_size)
-            image_array = img_to_array(image) / 255.0  # Normalize pixel values
-            images.append(image_array)
-    return np.array(images)
 
 
 tf.random.set_seed(seed)
