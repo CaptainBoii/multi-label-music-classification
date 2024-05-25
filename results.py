@@ -11,6 +11,11 @@ from sklearn.metrics import (
     hamming_loss,
     accuracy_score,
     log_loss,
+    balanced_accuracy_score,
+)
+from imblearn.metrics import (
+    geometric_mean_score,
+    specificity_score,
 )
 
 
@@ -44,6 +49,9 @@ results_labels = [
     "F1",
     "Precision",
     "Recall",
+    "Balanced Accuracy",
+    "Specificity",
+    "Geometric Mean",
     "Hamming",
     "0/1",
 ]
@@ -123,8 +131,17 @@ def metrics() -> None:
                     results[spect_type][genre_id][5] = round(
                         recall_score(y_test, y_result, average="binary"), 3
                     )
-                    results[spect_type][genre_id][6] = None
-                    results[spect_type][genre_id][7] = None
+                    results[spect_type][genre_id][6] = round(
+                        balanced_accuracy_score(y_test, y_result, average="binary"), 3
+                    )
+                    results[spect_type][genre_id][7] = round(
+                        specificity_score(y_test, y_result, average="binary"), 3
+                    )
+                    results[spect_type][genre_id][8] = round(
+                        geometric_mean_score(y_test, y_result), 3
+                    )
+                    results[spect_type][genre_id][9] = None
+                    results[spect_type][genre_id][10] = None
             results[spect_type][len(genres)][0] = "Aggregated"
             results[spect_type][len(genres)][1] = round(
                 accuracy_score(
@@ -160,6 +177,28 @@ def metrics() -> None:
                 3,
             )
             results[spect_type][len(genres)][6] = round(
+                balanced_accuracy_score(
+                    aggregated_test[spect_type],
+                    aggregated_result[spect_type],
+                    average="binary",
+                ),
+                3,
+            )
+            results[spect_type][len(genres)][7] = round(
+                specificity_score(
+                    aggregated_test[spect_type],
+                    aggregated_result[spect_type],
+                    average="binary",
+                ),
+                3,
+            )
+            results[spect_type][len(genres)][8] = round(
+                geometric_mean_score(
+                    aggregated_test[spect_type], aggregated_result[spect_type]
+                ),
+                3,
+            )
+            results[spect_type][len(genres)][9] = round(
                 hamming_loss(
                     aggregated_test[spect_type], aggregated_result[spect_type]
                 ),
@@ -179,7 +218,7 @@ def metrics() -> None:
                 if partial_sum == 16:
                     binary_correct += 1
 
-            results[spect_type][len(genres)][7] = round(
+            results[spect_type][len(genres)][10] = round(
                 (float(binary_correct) / 1801), 3
             )
             df = pd.DataFrame(results[spect_type])
