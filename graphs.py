@@ -37,6 +37,8 @@ genres = [
 ]
 
 matplotlib.rcParams["figure.dpi"] = 600
+matplotlib.rcParams["axes.spines.right"] = False
+matplotlib.rcParams["axes.spines.top"] = False
 
 
 def experiment_comparison_plot():
@@ -116,216 +118,6 @@ def experiment_comparison_plot():
     plt.clf()
 
 
-def experiment_1_graphs():
-    df1_0 = pd.read_csv("./Results/results_experiment_1_Spectrograms.csv")
-    df1_1 = pd.read_csv("./Results/results_experiment_1_MelSpectrograms.csv")
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(
-        [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
-        df1_0.iloc[16, 3:],
-        bar_width,
-        label="Spectrograms",
-    )
-    plt.bar(
-        [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
-        df1_1.iloc[16, 3:],
-        bar_width,
-        label="MelSpectrograms",
-    )
-    plt.xlabel("Metrics")
-    plt.ylabel("Value")
-    plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.savefig("./Graphs/comparison_ex_1_metrics.png", bbox_inches="tight")
-    plt.clf()
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(np.arange(0.9, 17.9, 1), df1_0["Accuracy"], bar_width, label="Spectrograms")
-    plt.bar(
-        np.arange(1.15, 18.15, 1), df1_1["Accuracy"], bar_width, label="MelSpectrograms"
-    )
-    plt.xlabel("Genre")
-    plt.ylabel("Accuracy")
-    plt.xticks(
-        ticks=np.arange(1, 18), labels=df1_0["Genre"], rotation=90
-    )  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.ylim(bottom=0.2)
-    plt.savefig("./Graphs/comparison_ex_1_accuracy.png", bbox_inches="tight")
-    plt.clf()
-
-
-def experiment_2_graphs():
-    df2_0 = pd.read_csv("./Results/results_experiment_2_Spectrograms.csv")
-    df2_1 = pd.read_csv("./Results/results_experiment_2_MelSpectrograms.csv")
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(
-        [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
-        df2_0.iloc[16, 3:],
-        bar_width,
-        label="Spectrograms",
-    )
-    plt.bar(
-        [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
-        df2_1.iloc[16, 3:],
-        bar_width,
-        label="MelSpectrograms",
-    )
-    plt.xlabel("Metrics")
-    plt.ylabel("Value")
-    plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.savefig("./Graphs/comparison_ex_2_metrics.png", bbox_inches="tight")
-    plt.clf()
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(np.arange(0.9, 17.9, 1), df2_0["Accuracy"], bar_width, label="Spectrograms")
-    plt.bar(
-        np.arange(1.15, 18.15, 1), df2_1["Accuracy"], bar_width, label="MelSpectrograms"
-    )
-    plt.xlabel("Genre")
-    plt.ylabel("Accuracy")
-    plt.xticks(
-        ticks=np.arange(1, 18), labels=df2_0["Genre"], rotation=90
-    )  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.ylim(bottom=0.5)
-    plt.savefig("./Graphs/comparison_ex_2_accuracy.png", bbox_inches="tight")
-    plt.clf()
-
-
-def experiment_3_graphs():
-    df3_0 = pd.read_csv("./Results/results_experiment_3_Spectrograms.csv")
-    df3_1 = pd.read_csv("./Results/results_experiment_3_MelSpectrograms.csv")
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(
-        [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
-        df3_0.iloc[16, 3:],
-        bar_width,
-        label="Spectrograms",
-    )
-    plt.bar(
-        [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
-        df3_1.iloc[16, 3:],
-        bar_width,
-        label="MelSpectrograms",
-    )
-    plt.xlabel("Metrics")
-    plt.ylabel("Value")
-    plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.savefig("./Graphs/comparison_ex_3_metrics.png", bbox_inches="tight")
-    plt.clf()
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(np.arange(0.9, 17.9, 1), df3_0["Accuracy"], bar_width, label="Spectrograms")
-    plt.bar(
-        np.arange(1.15, 18.15, 1), df3_1["Accuracy"], bar_width, label="MelSpectrograms"
-    )
-    plt.xlabel("Genre")
-    plt.ylabel("Accuracy")
-    plt.xticks(
-        ticks=np.arange(1, 18), labels=df3_0["Genre"], rotation=90
-    )  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.ylim(bottom=0.5)
-    plt.savefig("./Graphs/comparison_ex_3_accuracy.png", bbox_inches="tight")
-    plt.clf()
-
-
-def experiment_4_graphs():
-    df4_0 = pd.read_csv("./Results/results_experiment_4_Spectrograms.csv")
-    df4_1 = pd.read_csv("./Results/results_experiment_4_MelSpectrograms.csv")
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(
-        [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
-        df4_0.iloc[16, 3:],
-        bar_width,
-        label="Spectrograms",
-    )
-    plt.bar(
-        [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
-        df4_1.iloc[16, 3:],
-        bar_width,
-        label="MelSpectrograms",
-    )
-    plt.xlabel("Metrics")
-    plt.ylabel("Value")
-    plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.savefig("./Graphs/comparison_ex_4_metrics.png", bbox_inches="tight")
-    plt.clf()
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(np.arange(0.9, 17.9, 1), df4_0["Accuracy"], bar_width, label="Spectrograms")
-    plt.bar(
-        np.arange(1.15, 18.15, 1), df4_1["Accuracy"], bar_width, label="MelSpectrograms"
-    )
-    plt.xlabel("Genre")
-    plt.ylabel("Accuracy")
-    plt.xticks(
-        ticks=np.arange(1, 18), labels=df4_0["Genre"], rotation=90
-    )  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.ylim(bottom=0.5)
-    plt.savefig("./Graphs/comparison_ex_4_accuracy.png", bbox_inches="tight")
-    plt.clf()
-
-
-def experiment_5_graphs():
-    df5_0 = pd.read_csv("./Results/results_experiment_5_Spectrograms.csv")
-    df5_1 = pd.read_csv("./Results/results_experiment_5_MelSpectrograms.csv")
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(
-        [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
-        df5_0.iloc[16, 3:],
-        bar_width,
-        label="Spectrograms",
-    )
-    plt.bar(
-        [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
-        df5_1.iloc[16, 3:],
-        bar_width,
-        label="MelSpectrograms",
-    )
-    plt.xlabel("Metrics")
-    plt.ylabel("Value")
-    plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.savefig("./Graphs/comparison_ex_5_metrics.png", bbox_inches="tight")
-    plt.clf()
-
-    plt.figure(figsize=(10, 10))
-    plt.bar(np.arange(0.9, 17.9, 1), df5_0["Accuracy"], bar_width, label="Spectrograms")
-    plt.bar(
-        np.arange(1.15, 18.15, 1), df5_1["Accuracy"], bar_width, label="MelSpectrograms"
-    )
-    plt.xlabel("Genre")
-    plt.ylabel("Accuracy")
-    plt.xticks(
-        ticks=np.arange(1, 18), labels=df5_0["Genre"], rotation=90
-    )  # Set X-axis ticks
-    plt.legend()
-    plt.grid(axis="y")
-    plt.ylim(bottom=0.5)
-    plt.savefig("./Graphs/comparison_ex_5_accuracy.png", bbox_inches="tight")
-    plt.clf()
-
-
 def stratified_comparison_metrics():
     df3_0 = pd.read_csv("./Results/results_experiment_3_Spectrograms.csv")
     df3_1 = pd.read_csv("./Results/results_experiment_3_MelSpectrograms.csv")
@@ -396,12 +188,131 @@ def stratified_comparison_metrics():
     plt.clf()
 
 
+def recall_specificity_bac():
+    df1_0 = pd.read_csv("./Results/results_experiment_1_Spectrograms.csv")
+    df1_1 = pd.read_csv("./Results/results_experiment_1_MelSpectrograms.csv")
+
+    df2_0 = pd.read_csv("./Results/results_experiment_2_Spectrograms.csv")
+    df2_1 = pd.read_csv("./Results/results_experiment_2_MelSpectrograms.csv")
+
+    df3_0 = pd.read_csv("./Results/results_experiment_3_Spectrograms.csv")
+    df3_1 = pd.read_csv("./Results/results_experiment_3_MelSpectrograms.csv")
+
+    df4_0 = pd.read_csv("./Results/results_experiment_4_Spectrograms.csv")
+    df4_1 = pd.read_csv("./Results/results_experiment_4_MelSpectrograms.csv")
+
+    df5_0 = pd.read_csv("./Results/results_experiment_5_Spectrograms.csv")
+    df5_1 = pd.read_csv("./Results/results_experiment_5_MelSpectrograms.csv")
+
+    for i, df in enumerate(
+        [[df1_0, df1_1], [df2_0, df2_1], [df3_0, df3_1], [df4_0, df4_1], [df5_0, df5_1]]
+    ):
+        plt.figure(figsize=(10, 10))
+        plt.bar(np.arange(0.8, 17.8, 1), df[0]["Recall"], 0.2, label="Recall")
+        plt.bar(np.arange(1, 18, 1), df[0]["Specificity"], 0.2, label="Specificity")
+        plt.bar(
+            np.arange(1.2, 18.2, 1), df[0]["Balanced Accuracy"], 0.2, label="BAC Score"
+        )
+        plt.xlabel("Genre")
+        plt.ylabel("Value")
+        plt.xticks(
+            ticks=np.arange(1, 18), labels=df[0]["Genre"], rotation=90
+        )  # Set X-axis ticks
+        plt.legend()
+        plt.grid(axis="y")
+        plt.ylim(bottom=0.1)
+        plt.savefig("./Graphs/comparison_rsb_{}.png".format(i + 1), bbox_inches="tight")
+        plt.clf()
+
+        plt.figure(figsize=(10, 10))
+        plt.bar(np.arange(0.8, 17.8, 1), df[1]["Recall"], 0.2, label="Recall")
+        plt.bar(np.arange(1, 18, 1), df[1]["Specificity"], 0.2, label="Specificity")
+        plt.bar(
+            np.arange(1.2, 18.2, 1), df[1]["Balanced Accuracy"], 0.2, label="BAC Score"
+        )
+        plt.xlabel("Genre")
+        plt.ylabel("Value")
+        plt.xticks(
+            ticks=np.arange(1, 18), labels=df[1]["Genre"], rotation=90
+        )  # Set X-axis ticks
+        plt.legend()
+        plt.grid(axis="y")
+        plt.ylim(bottom=0.1)
+        plt.savefig(
+            "./Graphs/comparison_rsb_mel_{}.png".format(i + 1), bbox_inches="tight"
+        )
+        plt.clf()
+
+
+def basic_graphs():
+    df1_0 = pd.read_csv("./Results/results_experiment_1_Spectrograms.csv")
+    df1_1 = pd.read_csv("./Results/results_experiment_1_MelSpectrograms.csv")
+
+    df2_0 = pd.read_csv("./Results/results_experiment_2_Spectrograms.csv")
+    df2_1 = pd.read_csv("./Results/results_experiment_2_MelSpectrograms.csv")
+
+    df3_0 = pd.read_csv("./Results/results_experiment_3_Spectrograms.csv")
+    df3_1 = pd.read_csv("./Results/results_experiment_3_MelSpectrograms.csv")
+
+    df4_0 = pd.read_csv("./Results/results_experiment_4_Spectrograms.csv")
+    df4_1 = pd.read_csv("./Results/results_experiment_4_MelSpectrograms.csv")
+
+    df5_0 = pd.read_csv("./Results/results_experiment_5_Spectrograms.csv")
+    df5_1 = pd.read_csv("./Results/results_experiment_5_MelSpectrograms.csv")
+
+    for i, df in enumerate(
+        [[df1_0, df1_1], [df2_0, df2_1], [df3_0, df3_1], [df4_0, df4_1], [df5_0, df5_1]]
+    ):
+        plt.figure(figsize=(10, 10))
+        plt.bar(
+            [0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9],
+            df[0].iloc[16, 3:],
+            bar_width,
+            label="Spectrograms",
+        )
+        plt.bar(
+            [1.15, 2.15, 3.15, 4.15, 5.15, 6.15, 7.15, 8.15],
+            df[1].iloc[16, 3:],
+            bar_width,
+            label="MelSpectrograms",
+        )
+        plt.xlabel("Metrics")
+        plt.ylabel("Value")
+        plt.xticks(ticks=np.arange(1, 9), labels=metrics[3:])  # Set X-axis ticks
+        plt.legend()
+        plt.grid(axis="y")
+        plt.savefig(
+            "./Graphs/comparison_ex_{}_metrics.png".format(i + 1), bbox_inches="tight"
+        )
+        plt.clf()
+
+        plt.figure(figsize=(10, 10))
+        plt.bar(
+            np.arange(0.9, 17.9, 1), df[0]["Accuracy"], bar_width, label="Spectrograms"
+        )
+        plt.bar(
+            np.arange(1.15, 18.15, 1),
+            df[1]["Accuracy"],
+            bar_width,
+            label="MelSpectrograms",
+        )
+        plt.xlabel("Genre")
+        plt.ylabel("Accuracy")
+        plt.xticks(
+            ticks=np.arange(1, 18), labels=df[0]["Genre"], rotation=90
+        )  # Set X-axis ticks
+        plt.legend()
+        plt.grid(axis="y")
+        plt.ylim(bottom=0.2)
+        plt.savefig(
+            "./Graphs/comparison_ex_{}_accuracy.png".format(i + 1), bbox_inches="tight"
+        )
+        plt.clf()
+
+
 if __name__ == "__main__":
     # experiment_comparison_plot()
-    # experiment_2_graphs()
     # stratified_comparison_metrics()
-    # experiment_1_graphs()
-    # experiment_3_graphs()
-    # experiment_4_graphs()
-    # experiment_5_graphs()
+    # recall_specificity_bac()
+    # basic_graphs()
     pass
