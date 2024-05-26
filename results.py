@@ -69,8 +69,8 @@ def metrics() -> None:
         aggregated_test = {"Spectrograms": [], "MelSpectrograms": []}
         aggregated_result = {"Spectrograms": [], "MelSpectrograms": []}
         results = {
-            "Spectrograms": np.zeros((17, 8), dtype="O"),
-            "MelSpectrograms": np.zeros((17, 8), dtype="O"),
+            "Spectrograms": np.zeros((17, 11), dtype="O"),
+            "MelSpectrograms": np.zeros((17, 11), dtype="O"),
         }
         dataset_type = "Default"
         if experiment == 4:
@@ -132,7 +132,7 @@ def metrics() -> None:
                         recall_score(y_test, y_result, average="binary"), 3
                     )
                     results[spect_type][genre_id][6] = round(
-                        balanced_accuracy_score(y_test, y_result, average="binary"), 3
+                        balanced_accuracy_score(y_test, y_result), 3
                     )
                     results[spect_type][genre_id][7] = round(
                         specificity_score(y_test, y_result, average="binary"), 3
@@ -178,9 +178,7 @@ def metrics() -> None:
             )
             results[spect_type][len(genres)][6] = round(
                 balanced_accuracy_score(
-                    aggregated_test[spect_type],
-                    aggregated_result[spect_type],
-                    average="binary",
+                    aggregated_test[spect_type], aggregated_result[spect_type]
                 ),
                 3,
             )
