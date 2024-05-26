@@ -220,7 +220,6 @@ def recall_specificity_bac():
         )  # Set X-axis ticks
         plt.legend()
         plt.grid(axis="y")
-        plt.ylim(bottom=0.1)
         plt.savefig("./Graphs/comparison_rsb_{}.png".format(i + 1), bbox_inches="tight")
         plt.clf()
 
@@ -237,7 +236,6 @@ def recall_specificity_bac():
         )  # Set X-axis ticks
         plt.legend()
         plt.grid(axis="y")
-        plt.ylim(bottom=0.1)
         plt.savefig(
             "./Graphs/comparison_rsb_mel_{}.png".format(i + 1), bbox_inches="tight"
         )
@@ -303,7 +301,6 @@ def basic_graphs():
         )  # Set X-axis ticks
         plt.legend()
         plt.grid(axis="y")
-        plt.ylim(bottom=0.2)
         plt.savefig(
             "./Graphs/comparison_ex_{}_accuracy.png".format(i + 1), bbox_inches="tight"
         )
@@ -313,6 +310,6 @@ def basic_graphs():
 if __name__ == "__main__":
     # experiment_comparison_plot()
     # stratified_comparison_metrics()
-    # recall_specificity_bac()
-    # basic_graphs()
+    recall_specificity_bac()
+    basic_graphs()
     pass
